@@ -1,0 +1,9 @@
+packages:
+  - .
+allowBuilds:
+  # esbuild (pulled in transitively by vitest) resolves its prebuilt platform binary without
+  # needing its postinstall script -- same reasoning and setting as rackbops-node-app-kit's own
+  # pnpm-workspace.yaml.
+  esbuild: false
+# No minimumReleaseAgeExclude: pnpm's release-age gate applies to every package here. A version
+# too young for the gate is pinned one patch back instead (never exempt a third-party package).

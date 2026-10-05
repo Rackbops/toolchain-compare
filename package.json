@@ -1,0 +1,42 @@
+{
+  "name": "@rackbops/toolchain-compare",
+  "version": "0.1.0",
+  "description": "Fleet toolchain comparator: grades a host's installed tools against toolchain-standard.json (Rackbops/Tooling#634 TC-6).",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rackbops/toolchain-compare.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.8.1",
+  "files": [
+    "dist",
+    "!dist/**/*.test.*"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "check": "biome check . && pnpm typecheck && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.0",
+    "vitest": "^5.0.3"
+  }
+}
