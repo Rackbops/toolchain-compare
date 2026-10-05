@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.1
+## 0.1.1 (2026-10-04)
 
 Re-synced with `Rackbops/Tooling` `main` at commit `2687db6130cf42d4a8d3b787dbb559247325b011`
 (Tooling#877 / #881, "govern the Claude Code CLI").

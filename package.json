@@ -1,6 +1,6 @@
 {
   "name": "@rackbops/toolchain-compare",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fleet toolchain comparator: grades a host's installed tools against toolchain-standard.json (Rackbops/Tooling#634 TC-6).",
   "license": "MIT",
   "type": "module",
