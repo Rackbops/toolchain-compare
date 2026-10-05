@@ -32,13 +32,14 @@ export interface StandardHost {
 /** The package-manager ids a tool's `packages` map may key on (#676) -- fixed and closed,
  * mirroring `toolchain_standard.py`'s `_KNOWN_MANAGERS`; an unrecognized key fails loudly in
  * `standard.ts`'s `parseStandard` rather than being silently dropped. */
-export type PackageManager = "apt" | "winget" | "scoop" | "choco" | "snap" | "pip";
+export type PackageManager = "apt" | "winget" | "scoop" | "choco" | "snap" | "pip" | "native";
 
 export interface StandardTool {
   applies: string[];
   match: MatchKind;
   target?: string;
-  /** The real package name/id each manager accepts (`{"apt": "git", "winget": "Git.Git"}`),
+  /** The real package name/id each manager accepts (`{"apt": "git", "winget": "Git.Git"}`;
+   * `native` is the vendor's own installer and its id is the installer URL, #877),
    * verified against the manager itself when the standard was authored -- never guessed. Absent
    * (or missing an entry for a given manager) means no verified id exists yet; `issue.ts`'s
    * `fixHint` falls back to a clearly-marked guess rather than a wrong real-looking command. */

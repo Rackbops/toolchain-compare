@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1
+
+Re-synced with `Rackbops/Tooling` `main` at commit `2687db6130cf42d4a8d3b787dbb559247325b011`
+(Tooling#877 / #881, "govern the Claude Code CLI").
+
+- `PackageManager` gains `"native"` (the vendor's own installer; its package id is the installer
+  URL), and `parseStandard` accepts it as a `packages` manager. Before this, a standard carrying a
+  `native` entry was rejected as an unknown manager.
+- The tests that pin it (`compare.test.ts`, `standard.test.ts`) come along from the same commit.
+
 ## 0.1.0
 
 First release: the comparator extracted from `Rackbops/Tooling`'s `tools-site`
@@ -13,4 +23,5 @@ First release: the comparator extracted from `Rackbops/Tooling`'s `tools-site`
   header comment of `compare.ts` (rephrased for consumers) and the relative import in `standard.ts`
   (`./compare.js`, as Node ESM requires).
 - The tests are the Tooling ones, minus the one that parsed Tooling's own `toolchain-standard.json`
-  from the repo root (that file does not exist here; tools-site keeps that test).
+  from the repo root (that file does not exist here; tools-site keeps that test). Their relative
+  imports carry the `.js` extension and `compare.test.ts`'s vitest import is sorted (biome).

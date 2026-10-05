@@ -8,6 +8,7 @@ const KNOWN_MANAGERS: readonly PackageManager[] = [
   "choco",
   "snap",
   "pip",
+  "native",
 ];
 
 /** Thrown by {@link parseStandard} naming the exact field that failed a shape check. */

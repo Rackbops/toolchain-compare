@@ -710,6 +710,87 @@ describe("compare() with per-role status (#666)", () => {
   });
 });
 
+// --- #877: the Claude Code CLI as a fleet-max tool. A self-contained fixture (its own standard
+// and sidecars) so no shared fixture above changes meaning. Stands in for the live store, which
+// has no Claude Code rows until artifact-console#673's inventory row ships. A fixture run of
+// fleet-max grading, not a guard for the `native` change itself (compare() never reads
+// `packages`).
+describe("compare() grades the Claude Code CLI fleet-max (#877)", () => {
+  const claudeStandard: Standard = {
+    schemaVersion: 1,
+    roles: ["windows-dev", "linux-server"],
+    hosts: {
+      Melody: { roles: ["windows-dev"] },
+      MILE: { roles: ["windows-dev"] },
+      nitro: { roles: ["linux-server"] },
+    },
+    tools: {
+      "Claude Code CLI": {
+        applies: ["windows-dev", "linux-server"],
+        match: "fleet-max",
+        packages: { native: "https://claude.ai/install.sh" },
+      },
+    },
+    unmanaged: [],
+  };
+  const claudeSidecar = (
+    host: string,
+    os: "windows" | "linux",
+    side: string,
+    version: string,
+  ): Sidecar => ({
+    schemaVersion: 1,
+    host,
+    hostname: host,
+    os,
+    generated: RECENT,
+    sides: [
+      {
+        side,
+        tools: [
+          {
+            name: "Claude Code CLI",
+            category: "AI tooling",
+            version,
+            path: "claude",
+            source: "installer",
+          },
+        ],
+        uncatalogued: [],
+      },
+    ],
+  });
+  // Melody reports an older version than nitro; MILE reports nothing at all.
+  const result = compare(
+    claudeStandard,
+    [
+      claudeSidecar("Melody", "windows", "windows", "2.1.100"),
+      claudeSidecar("nitro", "linux", "linux", "2.1.283"),
+    ],
+    NOW,
+  );
+
+  it("resolves the fleet maximum and grades the lower host behind", () => {
+    expect(row(result, "Claude Code CLI").cells.nitro).toMatchObject({
+      status: "ok",
+      version: "2.1.283",
+      target: "2.1.283",
+    });
+    expect(row(result, "Claude Code CLI").cells.Melody).toMatchObject({
+      status: "behind",
+      version: "2.1.100",
+      target: "2.1.283",
+    });
+  });
+
+  it("reports a host that doesn't report it as missing for an applicable role", () => {
+    expect(row(result, "Claude Code CLI").cells.MILE).toMatchObject({
+      status: "missing",
+      target: "2.1.283",
+    });
+  });
+});
+
 // --- mutation guards: these tests exist specifically to fail if either invariant below is
 // broken, per the review gate's mutation-test requirement. -----------------------------------
 describe("mutation guards", () => {

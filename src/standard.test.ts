@@ -133,6 +133,25 @@ describe("parseStandard()", () => {
     expect(parseStandard(data).tools.Git.packages).toEqual({ apt: "git", winget: "Git.Git" });
   });
 
+  it("accepts the native installer manager, its id the installer URL (#877)", () => {
+    const data = {
+      schemaVersion: 1,
+      roles: ["windows-dev"],
+      hosts: {},
+      tools: {
+        "Claude Code CLI": {
+          applies: ["windows-dev"],
+          match: "fleet-max",
+          packages: { native: "https://claude.ai/install.sh" },
+        },
+      },
+      unmanaged: [],
+    };
+    expect(parseStandard(data).tools["Claude Code CLI"].packages).toEqual({
+      native: "https://claude.ai/install.sh",
+    });
+  });
+
   it("rejects an unknown packages manager", () => {
     const data = {
       schemaVersion: 1,
